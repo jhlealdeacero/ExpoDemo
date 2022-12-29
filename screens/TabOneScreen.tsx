@@ -4,6 +4,7 @@ import { obtenerPedidos } from '../services/pedidos/pedidos';
 import { RootTabScreenProps } from '../types';
 import { useState, useEffect } from 'react'
 import { obtenerPagos } from '../services/pagos/pagos';
+import { FontAwesome } from '@expo/vector-icons';
 
 export default function TabOneScreen({ navigation }: RootTabScreenProps<'Tablero'>) {
 
@@ -16,6 +17,7 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'Tablero
   const fetchData = async () => {
     try {
       const data = await obtenerPedidos()
+
       setPedidos(data.Result0)
 
       const pagosData = await obtenerPagos()
@@ -45,17 +47,57 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'Tablero
           <Text style={styles.cardTitle}>Pedidos recientes</Text>
           <View style={
             {
-              backgroundColor: 'transparent'
+              backgroundColor: '#000'
             }
           }>
+            <View
+              style={{
+                flexDirection: 'row',
+                backgroundColor: '',
+                marginBottom: 10
+              }}
+            >
+              <Text style={{
+                flex: 1,
+                fontWeight: '600'
+              }}>O.C</Text>
+              <Text style={{
+                flex: 1,
+                fontWeight: '600',
+              }}>Destino</Text>
+            </View>
             {
               pedidos.map(pedido => (
-                <Text
-                  key={pedido.OrdenCompra}
+                <View
+                  key={pedido.OrdenCompra === "" || !pedido.OrdenCompra ? pedido.IdFabricacion : pedido.OrdenCompra}
                   style={{
+                    flexDirection: 'row',
+                    backgroundColor: '',
                     marginBottom: 10
                   }}
-                >- Orden de Compra: {pedido.OrdenCompra}</Text>
+                >
+                  <Text
+                    style={{
+                      flex: 1,
+                    }}
+                  >{pedido.OrdenCompra === "" || !pedido.OrdenCompra ? pedido.IdFabricacion : pedido.OrdenCompra}</Text>
+                  <View style={{
+                    flexDirection: 'row',
+                    flex: 1,
+                  }}>
+                    <FontAwesome
+                      name="truck"
+                      size={12}
+                    color='#fff'
+                    style={{ marginRight: 10 }}
+                    /><Text
+                      style={{
+                        color:'#fff'
+                      }}
+                    >{pedido.Destino}</Text>
+                  </View>
+                </View>
+
               ))
             }
           </View>
@@ -155,7 +197,7 @@ const styles = StyleSheet.create({
   card: {
     width: '100%',
     height: 200,
-    backgroundColor: '#f6f6f6',
+    backgroundColor: '#000',
     marginBottom: 30,
     padding: 10
   },
