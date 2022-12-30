@@ -1,4 +1,4 @@
-import { ScrollView, StyleSheet } from 'react-native';
+import { Alert, ScrollView, StyleSheet } from 'react-native';
 import { Text, View } from '../components/Themed';
 import { obtenerPedidos } from '../services/pedidos/pedidos';
 import { RootTabScreenProps } from '../types';
@@ -47,21 +47,24 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'Tablero
           <Text style={styles.cardTitle}>Pedidos recientes</Text>
           <View style={
             {
-              backgroundColor: '#000'
+              backgroundColor: 'transparent'
             }
           }>
             <View
               style={{
                 flexDirection: 'row',
-                backgroundColor: '',
+                backgroundColor: 'transparent',
                 marginBottom: 10
               }}
             >
               <Text style={{
                 flex: 1,
-                fontWeight: '600'
+                fontWeight: '600',
+                color:'#fff'
               }}>O.C</Text>
-              <Text style={{
+              <Text 
+              onPress={()=>{Alert.alert("mensaje")}}
+              style={{
                 flex: 1,
                 fontWeight: '600',
               }}>Destino</Text>
@@ -72,7 +75,7 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'Tablero
                   key={pedido.OrdenCompra === "" || !pedido.OrdenCompra ? pedido.IdFabricacion : pedido.OrdenCompra}
                   style={{
                     flexDirection: 'row',
-                    backgroundColor: '',
+                    backgroundColor: 'transparent',
                     marginBottom: 10
                   }}
                 >
@@ -84,17 +87,14 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'Tablero
                   <View style={{
                     flexDirection: 'row',
                     flex: 1,
+                    backgroundColor:'transparent',
                   }}>
                     <FontAwesome
                       name="truck"
                       size={12}
-                    color='#fff'
-                    style={{ marginRight: 10 }}
-                    /><Text
-                      style={{
-                        color:'#fff'
-                      }}
-                    >{pedido.Destino}</Text>
+                      color="white"
+                      style={{ marginRight: 10 }}
+                    /><Text>{pedido.Destino}</Text>
                   </View>
                 </View>
 
@@ -197,7 +197,7 @@ const styles = StyleSheet.create({
   card: {
     width: '100%',
     height: 200,
-    backgroundColor: '#000',
+    backgroundColor: '#c1c1c1',
     marginBottom: 30,
     padding: 10
   },
