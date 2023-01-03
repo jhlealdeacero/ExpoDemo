@@ -2,7 +2,7 @@ import { api } from "../../api/api";
 import { headers } from "../../utils/config";
 import { apiKraken } from "../../constants/ApiKraken";
 
-export const obtenerPagos = async () => {
+export const obtenerPagos = async (token:string) => {
   const { data } = await api.post(
     apiKraken.vpoDashboardPagosSrv,
     {
@@ -11,7 +11,10 @@ export const obtenerPagos = async () => {
       tipoEstructura: 1,
     },
     {
-      headers,
+      headers: {
+        'x-api-key': 'ED5DDAAA-2074-4426-A2BF-9A962CFD2AF6',
+        'x-access-token': token,
+      },
     }
   );
 

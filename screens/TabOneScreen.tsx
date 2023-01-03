@@ -1,10 +1,14 @@
-import { Alert, ScrollView, StyleSheet } from 'react-native';
+import { Alert, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import { Text, View } from '../components/Themed';
 import { obtenerPedidos } from '../services/pedidos/pedidos';
 import { RootTabScreenProps } from '../types';
 import { useState, useEffect } from 'react'
 import { obtenerPagos } from '../services/pagos/pagos';
 import { FontAwesome } from '@expo/vector-icons';
+import { AuthContext } from '../context/auth';
+import { useContext } from 'react'
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 export default function TabOneScreen({ navigation }: RootTabScreenProps<'Tablero'>) {
 
@@ -14,21 +18,28 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'Tablero
 
   const [docs, setDocs] = useState<any[]>([])
 
+  const { token, setToken } = useContext(AuthContext)
+
   const fetchData = async () => {
     try {
-      const data = await obtenerPedidos()
+      const data = await obtenerPedidos(token as string)
 
       setPedidos(data.Result0)
 
-      const pagosData = await obtenerPagos()
+      const pagosData = await obtenerPagos(token as string)
       setPagos(pagosData.Result0)
 
-      const docsData = await obtenerPedidos()
+      const docsData = await obtenerPedidos(token as string)
       setDocs(docsData.Result0)
 
     } catch (error) {
       console.log({ error })
     }
+  }
+
+  const logOut = () => {
+    AsyncStorage.removeItem('token')
+    setToken(null)
   }
 
   useEffect(() => {
@@ -60,14 +71,14 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'Tablero
               <Text style={{
                 flex: 1,
                 fontWeight: '600',
-                color:'#fff'
+                color: '#fff'
               }}>O.C</Text>
-              <Text 
-              onPress={()=>{Alert.alert("mensaje")}}
-              style={{
-                flex: 1,
-                fontWeight: '600',
-              }}>Destino</Text>
+              <Text
+                onPress={() => { Alert.alert("mensaje") }}
+                style={{
+                  flex: 1,
+                  fontWeight: '600',
+                }}>Destino</Text>
             </View>
             {
               pedidos.map(pedido => (
@@ -87,7 +98,7 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'Tablero
                   <View style={{
                     flexDirection: 'row',
                     flex: 1,
-                    backgroundColor:'transparent',
+                    backgroundColor: 'transparent',
                   }}>
                     <FontAwesome
                       name="truck"
@@ -173,6 +184,16 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'Tablero
             }
           </View>
         </View>
+        <View style={styles.inputGroup}>
+        <TouchableOpacity
+          onPress={logOut}
+          style={[styles.btn, styles.btnOrange]}>
+          <Text style={{
+            color: 'white',
+            fontSize: 16
+          }}>Cerrar sesión</Text>
+        </TouchableOpacity>
+        </View>
       </View>
     </ScrollView>
   );
@@ -205,5 +226,19 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '600',
     marginBottom: 20
-  }
+  },
+  inputGroup: {
+    marginBottom: 50,
+    width: '100%'
+  },
+  btn: {
+    height: 42,
+    borderBottomWidth: 0,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  btnOrange: {
+    backgroundColor: '#f46c0c',
+    color: 'white'
+  },
 });

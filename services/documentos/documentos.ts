@@ -2,7 +2,7 @@ import { api } from "../../api/api";
 import { apiKraken } from "../../constants/ApiKraken";
 import { headers } from "../../utils/config";
 
-export const obtenerDocumentos = async () => {
+export const obtenerDocumentos = async (token: string) => {
   const { data } = await api.post(
     "23/205",
     {
@@ -10,7 +10,10 @@ export const obtenerDocumentos = async () => {
       tipoEstructura: 1,
     },
     {
-      headers,
+      headers: {
+        'x-api-key': 'ED5DDAAA-2074-4426-A2BF-9A962CFD2AF6',
+        'x-access-token': token,
+      },
     }
   );
 
