@@ -1,6 +1,5 @@
 import { api } from "../../api/api";
 import { apiKraken } from "../../constants/ApiKraken";
-import { headers } from "../../utils/config";
 
 export const obtenerPedidos = async (token: string) => {
   const { data } = await api.post(

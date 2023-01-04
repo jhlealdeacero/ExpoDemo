@@ -19,7 +19,7 @@ export const AuthProvider: FC<Props> = ({ children }) => {
 
   const [state, dispatch] = useReducer(authReducer, AUTH_INITIAL_STATE)
 
-  const setToken = (token: string) => {
+  const setToken = (token: string | null) => {
     dispatch({ type: 'Auth - Set Token', payload: token })
   }
 

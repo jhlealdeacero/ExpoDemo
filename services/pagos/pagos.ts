@@ -1,5 +1,4 @@
 import { api } from "../../api/api";
-import { headers } from "../../utils/config";
 import { apiKraken } from "../../constants/ApiKraken";
 
 export const obtenerPagos = async (token:string) => {

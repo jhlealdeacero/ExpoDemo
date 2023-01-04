@@ -4,7 +4,7 @@ import { AuthState } from './';
 type AuthActionType =
   {
     type: 'Auth - Set Token',
-    payload: string
+    payload: string | null
   }
   |
   {

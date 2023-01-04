@@ -8,6 +8,7 @@ import { FontAwesome } from '@expo/vector-icons';
 import { AuthContext } from '../context/auth';
 import { useContext } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { obtenerDocumentos } from '../services/documentos/documentos';
 
 
 export default function TabOneScreen({ navigation }: RootTabScreenProps<'Tablero'>) {
@@ -29,7 +30,7 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'Tablero
       const pagosData = await obtenerPagos(token as string)
       setPagos(pagosData.Result0)
 
-      const docsData = await obtenerPedidos(token as string)
+      const docsData = await obtenerDocumentos(token as string)
       setDocs(docsData.Result0)
 
     } catch (error) {
@@ -172,27 +173,55 @@ export default function TabOneScreen({ navigation }: RootTabScreenProps<'Tablero
               backgroundColor: 'transparent'
             }
           }>
+            <View
+              style={{
+                flexDirection: 'row',
+                backgroundColor: 'transparent',
+                marginBottom: 10
+              }}
+            >
+              <Text style={{
+                flex: 1,
+                fontWeight: '600'
+              }}>O.C</Text>
+              <Text style={{
+                flex: 1,
+                fontWeight: '600'
+              }}>Total</Text>
+            </View>
             {
               docs.map(doc => (
-                <Text
-                  key={doc.OrdenCompra}
+                <View key={doc.OrdenCompra === "" || !doc.OrdenCompra ? doc.IdFabricacion : doc.OrdenCompra}
                   style={{
+                    flexDirection: 'row',
+                    backgroundColor: 'transparent',
                     marginBottom: 10
-                  }}
-                >- Orden de Compra: {doc.OrdenCompra}</Text>
+                  }}>
+                  <Text
+                    key={doc.OrdenCompra}
+                    style={{
+                     flex:1,
+                    }}
+                  >{doc.OrdenCompra === "" || !doc.OrdenCompra ? doc.IdFabricacion : doc.OrdenCompra}</Text>
+                  <Text
+                    style={{
+                      flex: 1,
+                    }}
+                  >{doc.Total}</Text>
+                </View>
               ))
             }
           </View>
         </View>
         <View style={styles.inputGroup}>
-        <TouchableOpacity
-          onPress={logOut}
-          style={[styles.btn, styles.btnOrange]}>
-          <Text style={{
-            color: 'white',
-            fontSize: 16
-          }}>Cerrar sesión</Text>
-        </TouchableOpacity>
+          <TouchableOpacity
+            onPress={logOut}
+            style={[styles.btn, styles.btnOrange]}>
+            <Text style={{
+              color: 'white',
+              fontSize: 16
+            }}>Cerrar sesión</Text>
+          </TouchableOpacity>
         </View>
       </View>
     </ScrollView>
